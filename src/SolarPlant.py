@@ -1,4 +1,3 @@
-from machine import Timer
 from collections import namedtuple
 
 import util
@@ -14,7 +13,7 @@ class SolarPlant:
         self._energyStored = Measurement(0,0)
         self._energyExported = Measurement(self._energyProduced.value - self._energyConsumed.value, 1)
         self._historySize = historySize
-        self._energyHistory = util.random_int_list( 200, self._historySize)
+        self._energyHistory = util.random_int_list(200, self._historySize)
         #solar_plant_timer = Timer(-1)
         #solar_plant_timer.init(period=30000, mode=Timer.PERIODIC, callback=self.update)
 
