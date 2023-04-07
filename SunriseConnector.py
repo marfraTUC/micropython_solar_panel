@@ -17,9 +17,10 @@ class SunriseConnector:
         '''
         self.latitude = latitude
         self.longitude = longitude
+        self.url = config.SUNRISE_API + str(latitude) + '&lng=' + str(
+            longitude) + '&formatted=0'
+
         self.update_information()
-        self.url = config.SUNRISE_API + str(self.latitude) + '&lng=' + str(
-            self.longitude) + '&formatted=0'
 
         #sunrise_timer = Timer(-3)
         #sunrise_timer.init(period=config.SUNRISE_UPDATE_INTERVAL, mode=Timer.PERIODIC, callback=self.update_information)

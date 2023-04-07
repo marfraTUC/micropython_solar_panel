@@ -64,17 +64,17 @@ class SolarPanelDisplay:
         self.display.display_frame()
 
 
-def write_power_production(solar_plant : SolarPlant, fb : framebuf.FrameBuffer):
+def write_power_production(solar_plant : SolarPlant, fb : framebuf.FrameBuffer, start = 1):
     write_measurment(fb, 65, 10, solar_plant.energyProduced())
     icon = solar_icons.solar_panel
     icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
     fb.blit(icon_frame, 10, 4)
-    fb.rect(1, 1, 199, 49, black)
+    fb.rect(1, start, 199, 49, black)
 
 
 
 
-def write_power_production_chart(solar_plant : SolarPlant, fb : framebuf.FrameBuffer, width, height = 100):
+def write_power_production_chart(solar_plant : SolarPlant, fb : framebuf.FrameBuffer, width, start = 51, height = 50):
     '''
     Writes the power production chart to the framebuffer.
     :param solar_plant:
@@ -88,26 +88,17 @@ def write_power_production_chart(solar_plant : SolarPlant, fb : framebuf.FrameBu
 
     # Calculate a scaling factor that scales the values to fit in the chart's height
     scaling_factor = height / (max_value - min_value)
-
     steps = len(solar_plant.energyHistory()) / width
     for x in range(0, width):
         # Scale the value using the scaling factor
         scaled_value = int((solar_plant.energyHistory()[int(x * steps)] - min_value) * scaling_factor)
 
         # Draw the chart
-        fb.vline(x, height - scaled_value, scaled_value, black)
+        fb.vline(x, start + height - scaled_value, scaled_value, black)
 
 
-    #steps = len(solar_plant.energyHistory()) / width
-    #for x in range(0, width):
-    #    fb.vline(x, 100 - solar_plant.energyHistory()[int(x*steps)], solar_plant.energyHistory()[int(x*steps)], black)
 
-    #for value in solar_plant.energyHistory():
-    #    fb.vline(x, height - value, value, black)
-    #    x = x + 1
-
-
-def write_power_consumption(solar_plant : SolarPlant, fb : framebuf.FrameBuffer):
+def write_power_consumption(solar_plant : SolarPlant, fb : framebuf.FrameBuffer, start = 101):
     '''
     Writes the power consumption meassuremnt to the framebuffer.
     :param solar_plant:
@@ -118,10 +109,10 @@ def write_power_consumption(solar_plant : SolarPlant, fb : framebuf.FrameBuffer)
     icon = solar_icons.house
     icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
     fb.blit(icon_frame, 7, 104)
-    fb.rect(1, 101, 199, 49, black)
+    fb.rect(1, start, 199, 49, black)
 
 
-def write_power_exported(solar_plant : SolarPlant, fb : framebuf.FrameBuffer):
+def write_power_exported(solar_plant : SolarPlant, fb : framebuf.FrameBuffer, start = 151):
     '''
     Writes the power exported meassuremnt to the framebuffer.
     :param solar_plant:
@@ -132,7 +123,7 @@ def write_power_exported(solar_plant : SolarPlant, fb : framebuf.FrameBuffer):
     icon = solar_icons.grid
     icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
     fb.blit(icon_frame, 13, 154)
-    fb.rect(1, 151, 199, 49, black)
+    fb.rect(1, start, 199, 49, black)
 
 def write_measurment(fb : framebuf.FrameBuffer, x, y, number : Measurement):
     '''
