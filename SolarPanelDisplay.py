@@ -81,9 +81,26 @@ def write_power_production_chart(solar_plant : SolarPlant, fb : framebuf.FrameBu
     :param fb:
     :return:
     '''
+
+    # Calculate the maximum and minimum value in the energy history
+    max_value = max(solar_plant.energyHistory())
+    min_value = min(solar_plant.energyHistory())
+
+    # Calculate a scaling factor that scales the values to fit in the chart's height
+    scaling_factor = height / (max_value - min_value)
+
     steps = len(solar_plant.energyHistory()) / width
     for x in range(0, width):
-        fb.vline(x, 100 - solar_plant.energyHistory()[int(x*steps)], solar_plant.energyHistory()[int(x*steps)], black)
+        # Scale the value using the scaling factor
+        scaled_value = int((solar_plant.energyHistory()[int(x * steps)] - min_value) * scaling_factor)
+
+        # Draw the chart
+        fb.vline(x, height - scaled_value, scaled_value, black)
+
+
+    #steps = len(solar_plant.energyHistory()) / width
+    #for x in range(0, width):
+    #    fb.vline(x, 100 - solar_plant.energyHistory()[int(x*steps)], solar_plant.energyHistory()[int(x*steps)], black)
 
     #for value in solar_plant.energyHistory():
     #    fb.vline(x, height - value, value, black)
