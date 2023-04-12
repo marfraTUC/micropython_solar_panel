@@ -13,7 +13,7 @@ class DisplayController:
     '''
     def __init__(self):
         self.solarPlant = SolarPlant(config.HISTORY_SIZE)
-        self.solarPanelDisplay = SolarPanelDisplay(self.solarPlant)
+        self.solarPanelDisplay = SolarPanelDisplay(self.solarPlant, config.MIRROR_DISPLAY, config.ROTATE_DISPLAY)
         self.sunriseConnector = SunriseConnector(config.LOCATION_LATITUDE, config.LOCATION_LONGITUDE)
         self.display_timer = Timer(-2)
         # display_timer.init(period=180000, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)

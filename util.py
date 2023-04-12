@@ -7,6 +7,7 @@ from machine import Pin, RTC
 
 
 def flash_pins(numer_of_flashes, time_between_flashes):
+    print("Util: Flashing pins...")
     led = Pin(2, Pin.OUT)
     enabled = False
     for i in range(numer_of_flashes*2):
@@ -36,18 +37,20 @@ def compare_times(time1, time2):
         return 0
 
 def connect_to_wifi(ssid, password):
+    print('Util: Checking WiFi...')
     wifi = network.WLAN(network.STA_IF)
     if not wifi.isconnected():
-        print('connecting to network...')
+        print('Util: connecting to network...')
         wifi.active(True)
         wifi.connect(ssid, password)
         while not wifi.isconnected():
             pass
-    print('network config:', wifi.ifconfig())
+    print('Util: network config:', wifi.ifconfig())
     flash_pins(2, 100)
 
 
 def set_time():
+    print('Util: Setting time...')
     rtc = RTC()
     ntptime.settime()  # set the rtc datetime from the remote server
     rtc.datetime()  # get date and time

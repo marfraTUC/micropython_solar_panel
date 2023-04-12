@@ -31,6 +31,7 @@ class SunriseConnector:
         :param timer:
         :return:
         '''
+        print("SunriseConncector: Update sunrise and sunset time")
         response = urequests.get(self.url)
         data = json.loads(response.text)
         sunrise = data['results']['sunrise']
