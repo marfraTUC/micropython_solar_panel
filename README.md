@@ -5,6 +5,8 @@ This repository contains the code for a solar panel display.
 It is a simple display that shows the current power output of a solar panel. 
 The project is based on a ESP8266 and a 1.54" e-Paper display from waveshare.
 
+<img src="https://github.com/marfraTUC/micropython_solar_panel/blob/main/Accompanying%20Files%20/display.jpeg?raw=true" alt="display" width="200"/>
+
 ### What works
 - Displaying data on the screen
 - Updating the screen
@@ -17,6 +19,9 @@ The project is based on a ESP8266 and a 1.54" e-Paper display from waveshare.
 ### Hardware
 * Waveshare ESP8266
 * Waveshare 1.54" e-Paper Display
+
+<img src="https://github.com/marfraTUC/micropython_solar_panel/blob/main/Accompanying%20Files%20/hardware.jpeg?raw=true" alt="hardware" width="200"/>
+
 
 ### Software
 * MicroPython 1.9.4
