@@ -4,21 +4,24 @@ import utime
 import util
 from SolarPanelDisplay import SolarPanelDisplay
 from SolarPlant import SolarPlant
-from SunriseConnector import SunriseConnector
+#from SunriseConnector import SunriseConnector
 import config
+import gc
 
 class DisplayController:
     '''
     This class is the main class of the application. It is responsible for the main loop and the update interval of the display.
     '''
     def __init__(self):
+        print("DisplayController: Init")
         self.solarPlant = SolarPlant(config.HISTORY_SIZE)
         self.solarPanelDisplay = SolarPanelDisplay(self.solarPlant, config.MIRROR_DISPLAY, config.ROTATE_DISPLAY)
-        self.sunriseConnector = SunriseConnector(config.LOCATION_LATITUDE, config.LOCATION_LONGITUDE)
-        self.display_timer = Timer(-2)
+        #self.sunriseConnector = SunriseConnector(config.LOCATION_LATITUDE, config.LOCATION_LONGITUDE)
+        #self.display_timer = Timer(-2)
         # display_timer.init(period=180000, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
         # self.display_timer.init(period=1800, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
         self.isDaytime = True
+        print("DisplayController: Init done")
 
     def write_to_display(self):
         self.solarPanelDisplay.write_to_display()
@@ -29,6 +32,7 @@ class DisplayController:
         Based on day or night it sets the update interval to night or day time update interval.
         '''
         print("updateSolarDisplay")
+        gc.collect()
         now = utime.mktime(utime.localtime())
         sunrise = utime.mktime(util.parse_time_string(self.sunriseConnector.get_sunrise_sunset()['sunrise']))
         sunset = utime.mktime(util.parse_time_string(self.sunriseConnector.get_sunrise_sunset()['sunset']))
@@ -52,5 +56,6 @@ class DisplayController:
 if __name__ == '__main__':
     util.connect_to_wifi(config.WIFI_SSID, config.WIFI_PASSWORD)
     util.set_time()
+    gc.collect()
     displayController = DisplayController()
     displayController.write_to_display()

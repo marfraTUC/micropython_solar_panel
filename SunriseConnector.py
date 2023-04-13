@@ -1,4 +1,4 @@
-import json
+import ujson
 import urequests
 import config
 
@@ -15,6 +15,7 @@ class SunriseConnector:
         :param latitude:
         :param longitude:
         '''
+        print("SunriseConnector: Init")
         self.latitude = latitude
         self.longitude = longitude
         self.url = config.SUNRISE_API + str(latitude) + '&lng=' + str(
@@ -33,7 +34,7 @@ class SunriseConnector:
         '''
         print("SunriseConncector: Update sunrise and sunset time")
         response = urequests.get(self.url)
-        data = json.loads(response.text)
+        data = ujson.loads(response.text)
         sunrise = data['results']['sunrise']
         sunset = data['results']['sunset']
         self.sun_info = {'sunrise': sunrise, 'sunset': sunset}
