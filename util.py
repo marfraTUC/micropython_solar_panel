@@ -1,7 +1,6 @@
 import utime
 import ntptime
 import network
-import random
 from machine import Pin, RTC
 
 
@@ -58,16 +57,16 @@ def set_time():
     flash_pins(3, 100)
 
 
-def random_int_list(max, size):
-    bit_count = bit_length(max)
-    return [random.getrandbits(bit_count) for _ in range(size)]
+#def random_int_list(max, size):
+#    bit_count = bit_length(max)
+#    return [random.getrandbits(bit_count) for _ in range(size)]
 
-def bit_length(n):
-    """Return the number of bits required to represent an integer."""
-    if n == 0:
-        return 0
-    bits = 0
-    while n > 0:
-        bits += 1
-        n >>= 1
-    return bits
+#def bit_length(n):
+#    """Return the number of bits required to represent an integer."""
+#    if n == 0:
+#        return 0
+#    bits = 0
+#    while n > 0:
+#        bits += 1
+#        n >>= 1
+#    return bits

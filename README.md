@@ -1,8 +1,8 @@
 # Solar Panel Display
 
 ## Introduction
-This repository contains the code for a solar panel display. 
-It is a simple display that shows the current power output of a solar panel. 
+This repository contains the code for a solar panel monitoring display. 
+It is a simple display that shows the current power output of your solar panela. 
 The project is based on a ESP8266 and a 1.54" e-Paper display from waveshare.
 
 <img src="https://github.com/marfraTUC/micropython_solar_panel/blob/main/Accompanying%20Files%20/display.jpeg?raw=true" alt="display" width="200"/>
@@ -13,8 +13,9 @@ The project is based on a ESP8266 and a 1.54" e-Paper display from waveshare.
 - Fetching data from a API to change display update intervalls based on day/night
 - Connecting to a WiFi network
 
-### What doesn't work
+### What doesn't work yet
 - Connecting to a the inverter to fetch data from it
+- Rotating the Screen
 
 ### Hardware
 * Waveshare ESP8266
@@ -41,6 +42,8 @@ LOCATION_LATITUDE=YOUR_LATITUDE
 LOCATION_LONGITUDE=YOUR_LONGITUTE
 SUNRISE_API="https://api.sunrise-sunset.org/json?lat="
 SUNRISE_UPDATE_INTERVAL=43200000 # 12 hours
+MIRROR_DISPLAY=True
+ROTATE_DISPLAY=const(90)
 ```
 - adjust the config.py to your needs
 - upload all files ```*.py``` files to the ESP8266

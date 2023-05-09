@@ -1,6 +1,5 @@
-from machine import Timer
-
 import utime
+from machine import Timer
 import util
 from SolarPanelDisplay import SolarPanelDisplay
 from SolarPlant import SolarPlant
@@ -16,10 +15,11 @@ class DisplayController:
         print("DisplayController: Init")
         self.solarPlant = SolarPlant(config.HISTORY_SIZE)
         self.solarPanelDisplay = SolarPanelDisplay(self.solarPlant, config.MIRROR_DISPLAY, config.ROTATE_DISPLAY)
+        self.lastUpdate = utime.mktime(utime.localtime())
         #self.sunriseConnector = SunriseConnector(config.LOCATION_LATITUDE, config.LOCATION_LONGITUDE)
-        #self.display_timer = Timer(-2)
-        # display_timer.init(period=180000, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
-        # self.display_timer.init(period=1800, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
+        #self.display_timer = Timer(-1)
+        #display_timer.init(period=180000, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
+        #self.display_timer.init(period=30000, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
         self.isDaytime = True
         print("DisplayController: Init done")
 
@@ -33,24 +33,26 @@ class DisplayController:
         '''
         print("updateSolarDisplay")
         gc.collect()
+
+        ''' Get current time and sunrise and sunset time.'''
         now = utime.mktime(utime.localtime())
         sunrise = utime.mktime(util.parse_time_string(self.sunriseConnector.get_sunrise_sunset()['sunrise']))
         sunset = utime.mktime(util.parse_time_string(self.sunriseConnector.get_sunrise_sunset()['sunset']))
+
+        ''' Get solar Plant Consumtion and Production.'''
+        self.solarPlant.update()
+
+        ''' update display'''
         if (now > sunrise) and (now < sunset):
-            # its Daytime. If its isDaytime is still on Nighttime, switch to Daytime
             print("daytime")
-            if (not self.isDaytime):
-                self.isDaytime = True
-                self.display_timer.deinit()
-                self.display_timer.init(period=config.DAYTIME_UPDATE_INTERVAL, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
+            if (now - self.lastUpdate) > 120:
+                self.lastUpdate = now
+                self.write_to_display()
         else:
-            # Its Nighttime. If its isDaytime is still on Daytime, switch to Nighttime
             print("nighttime")
-            if (self.isDaytime):
-                self.isDaytime = False
-                self.display_timer.deinit()
-                self.display_timer.init(period=config.NIGHTTIME_UPDATE_INTERVAL, mode=Timer.PERIODIC, callback=self.updateSolarDisplay)
-        self.write_to_display()
+            if (now - self.lastUpdate) > 1200:
+                self.lastUpdate = now
+                self.write_to_display()
 
 
 if __name__ == '__main__':
@@ -58,4 +60,9 @@ if __name__ == '__main__':
     util.set_time()
     gc.collect()
     displayController = DisplayController()
+    gc.collect()
     displayController.write_to_display()
+    gc.collect()
+#    display_timer = Timer(-1)
+#    display_timer.init(period=180000, mode=Timer.PERIODIC, callback=displayController.updateSolarDisplay)
+

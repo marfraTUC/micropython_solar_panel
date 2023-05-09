@@ -23,10 +23,8 @@ class SunriseConnector:
 
         self.update_information()
 
-        #sunrise_timer = Timer(-3)
-        #sunrise_timer.init(period=config.SUNRISE_UPDATE_INTERVAL, mode=Timer.PERIODIC, callback=self.update_information)
 
-    def update_information(self, timer=None):
+    def update_information(self):
         '''
         This function updates the sunrise and sunset time for the given location.
         :param timer:

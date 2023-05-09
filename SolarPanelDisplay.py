@@ -103,7 +103,10 @@ def write_power_production_chart(fb, history, width = 200, height=50, start=51):
     min_value = min(history)
 
     # Calculate a scaling factor that scales the values to fit in the chart's height
-    scaling_factor = height / (max_value - min_value)
+    try:
+        scaling_factor = height / (max_value - min_value)
+    except ZeroDivisionError:
+        scaling_factor = 0
     steps = len(history) / width
     for x_value in range(0, width):
         # Scale the value using the scaling factor
@@ -157,9 +160,15 @@ def write_measurment(fb: framebuf.FrameBuffer, x_value, y_value, number: Measure
     fb.blit(icon_frame, x_value, int(y_value + icon.height / 2) + 5)
     x_value = x_value + icon.width + 5
     for char in str(number.value):
-        icon = number_switcher.get(int(char))
-        icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
-        fb.blit(icon_frame, x_value, y_value)
+        try:
+            icon = number_switcher.get(int(char))
+            icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
+            fb.blit(icon_frame, x_value, y_value)
+        except ValueError:
+            icon = solar_icons.draw
+            icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
+            fb.blit(icon_frame, x_value, y_value+15)
+
         x_value = x_value + icon.width
     icon = solar_icons.watt
     icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
