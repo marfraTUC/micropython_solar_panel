@@ -12,10 +12,11 @@ The project is based on a ESP8266 and a 1.54" e-Paper display from waveshare.
 - Updating the screen
 - Fetching data from a API to change display update intervalls based on day/night
 - Connecting to a WiFi network
+- Connecting to a the inverter to fetch data from it
 
 ### What doesn't work yet
-- Connecting to a the inverter to fetch data from it
 - Rotating the Screen
+- Automatic updates in intervalls
 
 ### Hardware
 * Waveshare ESP8266
