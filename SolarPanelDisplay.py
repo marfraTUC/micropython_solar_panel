@@ -1,10 +1,10 @@
 import framebuf
-from machine import SPI, Pin
-from micropython import const
-
+import utime
 import epaper1in54
 import gc
 import solar_icons
+from machine import SPI, Pin
+from micropython import const
 from SolarPlant import SolarPlant, Measurement
 
 black = const(0)
@@ -63,9 +63,19 @@ class SolarPanelDisplay:
         fb.fill(white)
 
         write_section(fb, self.solarPlant.energyProduced(), solar_icons.solar_panel, 1, 49)
+        gc.collect()
         write_power_production_chart(fb, self.solarPlant.energyHistory(),200,50)
+        gc.collect()
         write_section(fb, self.solarPlant.energyConsumed(), solar_icons.house, 101, 149)
+        gc.collect()
         write_section(fb, self.solarPlant.energyExported(), solar_icons.grid, 151, 199)
+        gc.collect()
+        ## Write current time
+        current_time = utime.time()
+        hours = current_time // 3600 % 24
+        minutes = (current_time // 60) % 60
+        gc.collect()
+        fb.text("{:02d}:{:02d}".format(hours, minutes), 156, 192, black)
 
         if self.mirrow_horizontal:
             mirror_framebuffer_horizontal(fb, self.display.width, self.display.height)
@@ -74,9 +84,9 @@ class SolarPanelDisplay:
         #while (rotated < self.rotated):
         #    self.rotate_framebuffer()
         #    rotated += 90
-
         self.display.set_frame_memory(buf, 0, 0, self.display.width, self.display.height)
         self.display.display_frame()
+
 
 def write_section(fb, measurment, icon, start=1, end=49):
     """
@@ -165,7 +175,7 @@ def write_measurment(fb: framebuf.FrameBuffer, x_value, y_value, number: Measure
             icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
             fb.blit(icon_frame, x_value, y_value)
         except ValueError:
-            icon = solar_icons.draw
+            icon = solar_icons.minus
             icon_frame = framebuf.FrameBuffer(icon.icon, icon.width, icon.height, framebuf.MONO_HLSB)
             fb.blit(icon_frame, x_value, y_value+15)
 
